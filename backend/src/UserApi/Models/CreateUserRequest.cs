@@ -36,7 +36,8 @@ public class CreateUserRequest
     /// The password for the user's account.
     /// </summary>
     [Required]
-    [MinLength(8)]
+    //[MinLength(8)]
+    [RegularExpression("/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8}/g", ErrorMessage = "Password must meet requirements")]
     public string Password { get; set; } = null!;
 
     /// <summary>
