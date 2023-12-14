@@ -21,6 +21,21 @@ public class ErrorHandlerMiddleware
         catch (Exception ex)
         {
             await HandleExceptionAsync(context, ex, _logger);
+             
+            var response = context.Response;
+            response.ContentType = "application/json";
+
+             switch(ex)
+            {
+                case DuplicateEmailException e:
+                    // custom application error
+                    response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    break;
+            }
+
+            var result = JsonSerializer.Serialize(new { message = ex?.Message });
+            await response.WriteAsync(result);
+
         }
     }
 
